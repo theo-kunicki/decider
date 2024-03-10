@@ -30,7 +30,7 @@
       const stitch = Math.random() < parseFloat(probability.value) ? '1' : '0';
       currentStitchDisplay.textContent = stitch;
       sequenceDisplay.textContent += stitch;
-      
+
       if (stitch === '1') {
         audio1.play();
       } else {
@@ -41,6 +41,18 @@
     nextStitchButton.addEventListener('click', generateStitch);
 
     let touchStartY = 0;
+    let debounceTimeout = null;
+
+    function debounce(func, wait) {
+      return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => func.apply(context, args), wait);
+      };
+    }
+
+    const debouncedGenerateStitch = debounce(generateStitch, 250);
 
     function handleTouchStart(event) {
       touchStartY = event.touches[0].clientY;
@@ -49,7 +61,7 @@
     function handleTouchMove(event) {
       const touchEndY = event.touches[0].clientY;
       if (touchEndY < touchStartY) {
-        generateStitch();
+        debouncedGenerateStitch();
       }
     }
 
