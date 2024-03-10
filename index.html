@@ -41,32 +41,20 @@
     nextStitchButton.addEventListener('click', generateStitch);
 
     let touchStartY = 0;
-    let debounceTimeout = null;
-
-    function debounce(func, wait) {
-      return function() {
-        const context = this;
-        const args = arguments;
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(() => func.apply(context, args), wait);
-      };
-    }
-
-    const debouncedGenerateStitch = debounce(generateStitch, 250);
 
     function handleTouchStart(event) {
       touchStartY = event.touches[0].clientY;
     }
 
-    function handleTouchMove(event) {
-      const touchEndY = event.touches[0].clientY;
+    function handleTouchEnd(event) {
+      const touchEndY = event.changedTouches[0].clientY;
       if (touchEndY < touchStartY) {
-        debouncedGenerateStitch();
+        generateStitch();
       }
     }
 
     document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
   </script>
 </body>
 </html>
