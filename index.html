@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crochet Probability Distribution Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <style>
+    body {
+      touch-action: none;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1>Crochet Probability Distribution Generator</h1>
+  <label for="probability">Probability of Outcome 1 (0-1):</label>
+  <input type="number" id="probability" min="0" max="1" step="0.01" value="0.5"><br><br>
+  <button id="nextStitch">Generate Next Stitch</button><br><br>
+  <p>Current Stitch: <span id="currentStitch"></span></p>
+  <p>Sequence: <span id="sequence"></span></p>
+
+  <script>
+    const probability = document.getElementById('probability');
+    const nextStitchButton = document.getElementById('nextStitch');
+    const currentStitchDisplay = document.getElementById('currentStitch');
+    const sequenceDisplay = document.getElementById('sequence');
+    const audio1 = new Audio('tone1.mp3');
+    const audio2 = new Audio('tone2.mp3');
+
+    function generateStitch() {
+      const stitch = Math.random() < parseFloat(probability.value) ? '1' : '0';
+      currentStitchDisplay.textContent = stitch;
+      sequenceDisplay.textContent += stitch;
+      
+      if (stitch === '1') {
+        audio1.play();
+      } else {
+        audio2.play();
+      }
+    }
+
+    nextStitchButton.addEventListener('click', generateStitch);
+
+    let touchStartY = 0;
+
+    function handleTouchStart(event) {
+      touchStartY = event.touches[0].clientY;
+    }
+
+    function handleTouchMove(event) {
+      const touchEndY = event.touches[0].clientY;
+      if (touchEndY < touchStartY) {
+        generateStitch();
+      }
+    }
+
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove);
+  </script>
+</body>
+</html>
