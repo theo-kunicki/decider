@@ -23,8 +23,8 @@
     const nextStitchButton = document.getElementById('nextStitch');
     const currentStitchDisplay = document.getElementById('currentStitch');
     const sequenceDisplay = document.getElementById('sequence');
-    const audio1 = new Audio('zapsplat_multimedia_beep_high_tech_cyber_positive_success_87521.mp3');
-    const audio2 = new Audio('zapsplat_multimedia_beep_high_tech_cyber_negative_87519.mp3');
+    const audio1 = new Audio('zapsplat_multimedia_beep_high_tech_cyber_negative_87519.mp3');
+    const audio2 = new Audio('zapsplat_multimedia_beep_high_tech_cyber_positive_success_87521.mp3');
 
     function generateStitch() {
       const stitch = Math.random() < parseFloat(probability.value) ? 'X' : 'O';
