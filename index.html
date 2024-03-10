@@ -29,7 +29,7 @@
     function generateStitch() {
       const stitch = Math.random() < parseFloat(probability.value) ? 'X' : 'O';
       currentStitchDisplay.textContent = stitch;
-      sequenceDisplay.textContent += stitch;
+      sequenceDisplay.textContent = stitch + sequenceDisplay.textContent;
 
       if (stitch === 'X') {
         audio1.play();
