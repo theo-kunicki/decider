@@ -27,11 +27,11 @@
     const audio2 = new Audio('tone2.mp3');
 
     function generateStitch() {
-      const stitch = Math.random() < parseFloat(probability.value) ? '1' : '0';
+      const stitch = Math.random() < parseFloat(probability.value) ? 'X' : 'O';
       currentStitchDisplay.textContent = stitch;
       sequenceDisplay.textContent += stitch;
 
-      if (stitch === '1') {
+      if (stitch === 'X') {
         audio1.play();
       } else {
         audio2.play();
