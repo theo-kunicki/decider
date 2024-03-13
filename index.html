@@ -45,8 +45,11 @@
         audio2.pause();
         audio2.currentTime = 0;
         audioUnlocked = true;
+        document.body.removeEventListener('click', unlockAudioPlayback);
       }
     }
+
+    document.body.addEventListener('click', unlockAudioPlayback);
 
     function generateStitch() {
       const stitch = Math.random() < parseFloat(probability.value) ? 'X' : 'O';
@@ -54,7 +57,6 @@
       sequenceDisplay.textContent = stitch + sequenceDisplay.textContent;
 
       if (soundEffectsCheckbox.checked) {
-        unlockAudioPlayback();
         if (stitch === 'X') {
           audio1.play();
         } else {
