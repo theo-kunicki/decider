@@ -72,7 +72,7 @@
   <pre id="sequence"></pre>
 
   <script>
-        const probability = document.getElementById('probability');
+    const probability = document.getElementById('probability');
     const soundEffectsCheckbox = document.getElementById('soundEffects');
     const nextStitchButton = document.getElementById('nextStitch');
     const currentStitchDisplay = document.getElementById('currentStitch');
@@ -84,18 +84,22 @@
 
     function unlockAudioPlayback() {
       if (!audioUnlocked) {
-        audio1.play();
-        audio1.pause();
-        audio1.currentTime = 0;
-        audio2.play();
-        audio2.pause();
-        audio2.currentTime = 0;
-        audioUnlocked = true;
-        document.body.removeEventListener('click', unlockAudioPlayback);
+        const unlockAudio = () => {
+          audio1.play();
+          audio1.pause();
+          audio1.currentTime = 0;
+          audio2.play();
+          audio2.pause();
+          audio2.currentTime = 0;
+          audioUnlocked = true;
+          document.body.removeEventListener('touchstart', unlockAudio);
+          document.body.removeEventListener('click', unlockAudio);
+        };
+
+        document.body.addEventListener('touchstart', unlockAudio);
+        document.body.addEventListener('click', unlockAudio);
       }
     }
-
-    document.body.addEventListener('click', unlockAudioPlayback);
 
     function generateStitch() {
       const stitch = Math.random() < parseFloat(probability.value) ? 'X' : 'O';
@@ -103,6 +107,7 @@
       sequenceDisplay.textContent = stitch + sequenceDisplay.textContent;
 
       if (soundEffectsCheckbox.checked) {
+        unlockAudioPlayback();
         if (stitch === 'X') {
           audio1.play();
         } else {
