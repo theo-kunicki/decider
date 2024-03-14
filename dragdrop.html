@@ -37,11 +37,13 @@
     flex: 0 0 50%; /* Ensure children maintain their size */
   }
   .color1 {
-    background-color: blue;
-  }
-  .color2 {
-    background-color: red;
-  }
+  background-color: #084C61; /* Dark Cerulean */
+}
+
+.color2 {
+  background-color: #F67E7D; /* Coral */
+}
+
   #canvas {
     display: grid;
     grid-template-columns: repeat(20, 40px);
@@ -70,8 +72,8 @@
 <body>
 
 <div id="controls">
-  Color 1: <input type="color" id="color1" value="#0000ff">
-  Color 2: <input type="color" id="color2" value="#ff0000">
+  Color 1: <input type="color" id="color1" value="#084C61">
+  Color 2: <input type="color" id="color2" value="#F67E7D">
   <button id="fillRandom">Fill Grid Randomly</button>
   <button id="clearGrid">Clear Grid</button>
 </div>
@@ -93,6 +95,7 @@
         <div class="color2"></div><div class="color1"></div>
         <div class="color2"></div><div class="color2"></div>
       </div>
+      
 </div>
 
 <div id="canvas"></div>
