@@ -73,6 +73,7 @@
   Color 1: <input type="color" id="color1" value="#0000ff">
   Color 2: <input type="color" id="color2" value="#ff0000">
   <button id="fillRandom">Fill Grid Randomly</button>
+  <button id="clearGrid">Clear Grid</button>
 </div>
 
 <div id="palette">
@@ -129,6 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
     cell.addEventListener('dblclick', function() {
       cell.innerHTML = ''; // Clear the cell on double-click
     });
+
+    document.getElementById('clearGrid').addEventListener('click', clearGrid);
   });
 
   const color1Picker = document.getElementById('color1');
@@ -158,6 +161,12 @@ document.addEventListener('DOMContentLoaded', function() {
       pattern.classList.add('droppedPattern');
       cell.innerHTML = ''; // Clear the cell
       cell.appendChild(pattern); // Append the cloned pattern
+    });
+  }
+
+  function clearGrid() {
+    document.querySelectorAll('.cell').forEach(cell => {
+        cell.innerHTML = '';
     });
   }
 
