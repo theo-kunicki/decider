@@ -26,6 +26,15 @@
       margin-bottom: 20px;
     }
 
+    #randomPattern {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+
     .draggable {
       width: 40px;
       height: 40px;
@@ -97,29 +106,23 @@
 
   <div id="palette">
     <div class="draggable" id="pattern1" draggable="true">
-      <div class="color1"></div>
-      <div class="color1"></div>
-      <div class="color2"></div>
-      <div class="color1"></div>
+      <div class="color1"></div><div class="color1"></div>
+      <div class="color2"></div><div class="color1"></div>
     </div>
     <div class="draggable" id="pattern2" draggable="true">
-      <div class="color2"></div>
-      <div class="color1"></div>
-      <div class="color2"></div>
-      <div class="color1"></div>
+      <div class="color2"></div><div class="color1"></div>
+      <div class="color2"></div><div class="color1"></div>
     </div>
     <div class="draggable" id="pattern3" draggable="true">
-      <div class="color1"></div>
-      <div class="color1"></div>
-      <div class="color2"></div>
-      <div class="color2"></div>
+      <div class="color1"></div><div class="color1"></div>
+      <div class="color2"></div><div class="color2"></div>
     </div>
     <div class="draggable" id="pattern4" draggable="true">
-      <div class="color2"></div>
-      <div class="color1"></div>
-      <div class="color2"></div>
-      <div class="color2"></div>
+      <div class="color2"></div><div class="color1"></div>
+      <div class="color2"></div><div class="color2"></div>
     </div>
+    <div class="draggable" id="randomPattern" draggable="true">?</div>
+
 
   </div>
 
@@ -139,6 +142,21 @@
           e.dataTransfer.setData('text/plain', e.target.id);
         });
       });
+
+      document.getElementById('randomPattern').addEventListener('dragstart', function (e) {
+        const randomPatternId = 'pattern' + Math.ceil(Math.random() * 4);
+        const clone = document.getElementById(randomPatternId).cloneNode(true);
+        document.body.appendChild(clone); // Temporarily add clone to the body to use it as the drag image
+        clone.style.position = 'absolute'; clone.style.top = '-1000px'; // Hide the clone from view
+
+        e.dataTransfer.setData('text/plain', randomPatternId);
+        e.dataTransfer.setDragImage(clone, 20, 20); // Set the clone as the drag image
+
+        setTimeout(() => { document.body.removeChild(clone); }, 0); // Remove the clone from the body
+      });
+
+      // Note: You might need to adjust '20, 20' in setDragImage to align the drag image as per your requirement.
+
 
       document.querySelectorAll('.cell').forEach(cell => {
         cell.addEventListener('dragover', function (e) {
@@ -197,6 +215,25 @@
           cell.innerHTML = '';
         });
       }
+
+      function updateColors() {
+        const color1 = document.getElementById('color1').value; // background color
+        const color2 = document.getElementById('color2').value; // text color
+
+        // Update the pattern colors as before
+        document.querySelectorAll('.color1').forEach(div => {
+          div.style.backgroundColor = color1;
+        });
+        document.querySelectorAll('.color2').forEach(div => {
+          div.style.backgroundColor = color2;
+        });
+
+        // Update the randomPattern div
+        const randomPatternDiv = document.getElementById('randomPattern');
+        randomPatternDiv.style.backgroundColor = color1; // Set the background to color1
+        randomPatternDiv.style.color = color2; // Set the text color to color2
+      }
+
 
       // Event listener for the 'Fill Grid Randomly' button
       document.getElementById('fillRandom').addEventListener('click', fillGridRandomly);
