@@ -1,182 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Drag & Drop Grid with Fixed Patterns</title>
-<style>
-  body {
-    margin: 0;
-    padding-top: 20px; /* Ensure content is not hidden by browser UI */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
-  }
-  #controls {
-    margin-bottom: 20px;
-  }
-  #palette {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .draggable {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    cursor: pointer;
-    border: 1px solid #000;
-  }
-  .draggable > div {
-    width: 20px;
-    height: 20px;
-  }
-  .color1, .color2 {
-    flex: 0 0 50%; /* Ensure children maintain their size */
-  }
-  .color1 {
-  background-color: #084C61; /* Dark Cerulean */
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag & Drop Grid with Fixed Patterns</title>
+  <style>
+    body {
+      margin: 0;
+      padding-top: 20px;
+      /* Ensure content is not hidden by browser UI */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
 
-.color2 {
-  background-color: #F67E7D; /* Coral */
-}
+    #controls {
+      margin-bottom: 20px;
+    }
 
-  #canvas {
-    display: grid;
-    grid-template-columns: repeat(20, 40px);
-    gap: 0;
-  }
-  .cell {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .droppedPattern {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .droppedPattern > div {
-    width: 20px;
-    height: 20px;
-    flex: 0 0 50%; /* Prevent flex items from growing or shrinking */
-  }
-</style>
+    #palette {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .draggable {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      cursor: pointer;
+      border: 1px solid #000;
+    }
+
+    .draggable>div {
+      width: 20px;
+      height: 20px;
+    }
+
+    .color1,
+    .color2 {
+      flex: 0 0 50%;
+      /* Ensure children maintain their size */
+    }
+
+    .color1 {
+      background-color: #084C61;
+      /* Dark Cerulean */
+    }
+
+    .color2 {
+      background-color: #F67E7D;
+      /* Coral */
+    }
+
+    #canvas {
+      display: grid;
+      grid-template-columns: repeat(20, 40px);
+      gap: 0;
+    }
+
+    .cell {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ccc;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .droppedPattern {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .droppedPattern>div {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 50%;
+      /* Prevent flex items from growing or shrinking */
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="controls">
-  Color 1: <input type="color" id="color1" value="#084C61">
-  Color 2: <input type="color" id="color2" value="#F67E7D">
-  <button id="fillRandom">Fill Grid Randomly</button>
-  <button id="clearGrid">Clear Grid</button>
-</div>
+  <div id="controls">
+    Color 1: <input type="color" id="color1" value="#084C61">
+    Color 2: <input type="color" id="color2" value="#F67E7D">
+    <button id="fillRandom">Fill Grid Randomly</button>
+    <button id="clearGrid">Clear Grid</button>
+  </div>
 
-<div id="palette">
+  <div id="palette">
     <div class="draggable" id="pattern1" draggable="true">
-        <div class="color1"></div><div class="color1"></div>
-        <div class="color2"></div><div class="color1"></div>
-      </div>
-      <div class="draggable" id="pattern2" draggable="true">
-        <div class="color2"></div><div class="color1"></div>
-        <div class="color2"></div><div class="color1"></div>
-      </div>
-      <div class="draggable" id="pattern3" draggable="true">
-        <div class="color1"></div><div class="color1"></div>
-        <div class="color2"></div><div class="color2"></div>
-      </div>
-      <div class="draggable" id="pattern4" draggable="true">
-        <div class="color2"></div><div class="color1"></div>
-        <div class="color2"></div><div class="color2"></div>
-      </div>
-      
-</div>
+      <div class="color1"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color1"></div>
+    </div>
+    <div class="draggable" id="pattern2" draggable="true">
+      <div class="color2"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color1"></div>
+    </div>
+    <div class="draggable" id="pattern3" draggable="true">
+      <div class="color1"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color2"></div>
+    </div>
+    <div class="draggable" id="pattern4" draggable="true">
+      <div class="color2"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color2"></div>
+    </div>
 
-<div id="canvas"></div>
+  </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const canvas = document.getElementById('canvas');
-  for (let i = 0; i < 400; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    canvas.appendChild(cell);
-  }
+  <div id="canvas"></div>
 
-  document.querySelectorAll('.draggable').forEach(elem => {
-    elem.addEventListener('dragstart', function(e) {
-      e.dataTransfer.setData('text/plain', e.target.id);
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const canvas = document.getElementById('canvas');
+      for (let i = 0; i < 400; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        canvas.appendChild(cell);
+      }
+
+      document.querySelectorAll('.draggable').forEach(elem => {
+        elem.addEventListener('dragstart', function (e) {
+          e.dataTransfer.setData('text/plain', e.target.id);
+        });
+      });
+
+      document.querySelectorAll('.cell').forEach(cell => {
+        cell.addEventListener('dragover', function (e) {
+          e.preventDefault();
+        });
+
+        cell.addEventListener('drop', function (e) {
+          e.preventDefault();
+          const id = e.dataTransfer.getData('text/plain');
+          const draggable = document.getElementById(id).cloneNode(true);
+          draggable.classList.remove('draggable');
+          draggable.classList.add('droppedPattern');
+          cell.innerHTML = ''; // Clear the cell
+          cell.appendChild(draggable); // Append the cloned pattern
+        });
+
+        cell.addEventListener('dblclick', function () {
+          cell.innerHTML = ''; // Clear the cell on double-click
+        });
+
+        document.getElementById('clearGrid').addEventListener('click', clearGrid);
+      });
+
+      const color1Picker = document.getElementById('color1');
+      const color2Picker = document.getElementById('color2');
+
+      function updateColors() {
+        const color1 = color1Picker.value;
+        const color2 = color2Picker.value;
+        document.querySelectorAll('.color1').forEach(div => {
+          div.style.backgroundColor = color1;
+        });
+        document.querySelectorAll('.color2').forEach(div => {
+          div.style.backgroundColor = color2;
+        });
+      }
+
+      color1Picker.addEventListener('input', updateColors);
+      color2Picker.addEventListener('input', updateColors);
+      updateColors(); // Initial color update
+
+      // New function to fill the grid randomly
+      function fillGridRandomly() {
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+          const randomPatternNumber = Math.ceil(Math.random() * 4); // 1 to 4
+          const pattern = document.getElementById(`pattern${randomPatternNumber}`).cloneNode(true);
+          pattern.classList.add('droppedPattern');
+          cell.innerHTML = ''; // Clear the cell
+          cell.appendChild(pattern); // Append the cloned pattern
+        });
+      }
+
+      function clearGrid() {
+        document.querySelectorAll('.cell').forEach(cell => {
+          cell.innerHTML = '';
+        });
+      }
+
+      // Event listener for the 'Fill Grid Randomly' button
+      document.getElementById('fillRandom').addEventListener('click', fillGridRandomly);
     });
-  });
-
-  document.querySelectorAll('.cell').forEach(cell => {
-    cell.addEventListener('dragover', function(e) {
-      e.preventDefault();
-    });
-
-    cell.addEventListener('drop', function(e) {
-      e.preventDefault();
-      const id = e.dataTransfer.getData('text/plain');
-      const draggable = document.getElementById(id).cloneNode(true);
-      draggable.classList.remove('draggable');
-      draggable.classList.add('droppedPattern');
-      cell.innerHTML = ''; // Clear the cell
-      cell.appendChild(draggable); // Append the cloned pattern
-    });
-
-    cell.addEventListener('dblclick', function() {
-      cell.innerHTML = ''; // Clear the cell on double-click
-    });
-
-    document.getElementById('clearGrid').addEventListener('click', clearGrid);
-  });
-
-  const color1Picker = document.getElementById('color1');
-  const color2Picker = document.getElementById('color2');
-
-  function updateColors() {
-    const color1 = color1Picker.value;
-    const color2 = color2Picker.value;
-    document.querySelectorAll('.color1').forEach(div => {
-      div.style.backgroundColor = color1;
-    });
-    document.querySelectorAll('.color2').forEach(div => {
-      div.style.backgroundColor = color2;
-    });
-  }
-
-  color1Picker.addEventListener('input', updateColors);
-  color2Picker.addEventListener('input', updateColors);
-  updateColors(); // Initial color update
-  
-  // New function to fill the grid randomly
-  function fillGridRandomly() {
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => {
-      const randomPatternNumber = Math.ceil(Math.random() * 4); // 1 to 4
-      const pattern = document.getElementById(`pattern${randomPatternNumber}`).cloneNode(true);
-      pattern.classList.add('droppedPattern');
-      cell.innerHTML = ''; // Clear the cell
-      cell.appendChild(pattern); // Append the cloned pattern
-    });
-  }
-
-  function clearGrid() {
-    document.querySelectorAll('.cell').forEach(cell => {
-        cell.innerHTML = '';
-    });
-  }
-
-  // Event listener for the 'Fill Grid Randomly' button
-  document.getElementById('fillRandom').addEventListener('click', fillGridRandomly);
-});
-</script>
+  </script>
 
 </body>
+
 </html>
