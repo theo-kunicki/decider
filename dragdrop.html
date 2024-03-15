@@ -54,7 +54,7 @@
       display: flex;
       flex-wrap: wrap;
       cursor: pointer;
-      border: 1px solid #000;
+      /* border: 1px solid #000; */
     }
 
     .draggable>div {
@@ -85,11 +85,15 @@
 
 
     .cell {
-      width: 40px;
-      height: 40px;
-      border: 1px solid #ccc;
-      display: flex;
-      flex-wrap: wrap;
+      width: 39;
+      height: 39px;
+      border: .5px solid #ccc;
+      padding: 0;
+      margin: 0;
+      justify-content: center;
+      align-items: flex-start;
+      /* display: flex; */
+      /* flex-wrap: wrap; */
     }
 
     .droppedPattern {
@@ -97,6 +101,7 @@
       height: 100%;
       display: flex;
       flex-wrap: wrap;
+      border: none;
     }
 
     .droppedPattern>div {
@@ -130,6 +135,11 @@
       /* Optional: Ensure the container takes at least the full height of the viewport */
       width: max-content;
     }
+
+    .cell.filled {
+      border: none; /* Remove the border for filled cells */
+    }
+
   </style>
 </head>
 
@@ -214,6 +224,8 @@
       if (targetCell) {
         targetCell.innerHTML = '';
         targetCell.appendChild(draggable);
+        targetCell.classList.add('filled'); // Add a class to indicate the cell is filled
+
       }
     }
 
@@ -288,6 +300,7 @@
         // This defines how many columns the grid will have, each 40px wide
 
         canvas.style.gridTemplateColumns = `repeat(${width}, 40px)`;
+        canvas.style.gridTemplateRows = `repeat(${height}, 40 px)`;
 
         // Create cells based on the input width and height
         for (let i = 0; i < width * height; i++) {
@@ -337,12 +350,14 @@
           pattern.classList.add('droppedPattern');
           cell.innerHTML = ''; // Clear the cell
           cell.appendChild(pattern); // Append the cloned pattern
+          cell.classList.add('filled'); // Add a class to indicate the cell is filled
         });
       }
 
       function clearGrid() {
         document.querySelectorAll('.cell').forEach(cell => {
           cell.innerHTML = '';
+          cell.classList.remove('filled'); // Remove the 'filled' class
         });
       }
 
