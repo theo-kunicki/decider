@@ -124,7 +124,7 @@
       display: flex;
       justify-content: center;
       /* Center children horizontally */
-      align-items: center;
+      align-items: flex-start;
       /* Center children vertically */
       min-height: 100vh;
       /* Optional: Ensure the container takes at least the full height of the viewport */
@@ -191,9 +191,9 @@
 
   <script>
 
-    window.onload = function () {
-      window.scrollTo(window.innerWidth/2, 0);  // Scroll to the top-left corner of the window
-    };
+    // window.onload = function (  ) {
+    //   window.scrollTo(window.innerWidth/2, 0);// Scroll to the top-left corner of the window
+    // };
 
     function handleDragOver(e) {
       e.preventDefault();
@@ -264,6 +264,18 @@
           updateGrid(gridWidth, gridHeight);
         } else {
           alert('Please enter valid width and height values.');
+        }
+      });
+
+      document.getElementById('gridWidth').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          document.getElementById('updateGridSize').click();
+        }
+      });
+
+      document.getElementById('gridHeight').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          document.getElementById('updateGridSize').click();
         }
       });
 
