@@ -16,18 +16,14 @@
     }
 
     body {
-      /* margin: 0; */
-      padding-top: 20px;
-      /* Ensure content is not hidden by browser UI */
-      /* display: flex;
-      flex-direction: column; */
       display: flex;
       flex-direction: column;
       font-family: Arial, sans-serif;
       text-align: center;
       align-content: center;
+      align-items: center;
       justify-content: center;
-      width: 100%;
+      min-width: max-content;
     }
 
 
@@ -80,10 +76,11 @@
       overflow: auto;
       /* min-width: 100%; */
       display: grid;
-      /* min-width: min-content; */
+      min-width: min-content;
       width: max-content;
       /* Ensure the container can shrink to fit grid content */
       padding: 20px;
+      justify-content: center;
     }
 
 
@@ -109,10 +106,6 @@
       /* Prevent flex items from growing or shrinking */
     }
 
-    /* #gridControls {
-      margin-bottom: 20px;
-    } */
-
     #gridControls input {
       margin: 0 auto;
       margin-bottom: 20px;
@@ -126,28 +119,16 @@
       /* Center-align the flex items vertically */
     }
 
-    /* .grid-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin: 0 auto;
-      /* Center-align the grid container horizontally 
-    } */
     .grid-container {
       overflow: auto;
       display: flex;
-      justify-content: center; /* Center children horizontally */
-      align-items: center; /* Center children vertically */
-      min-height: 100vh; /* Optional: Ensure the container takes at least the full height of the viewport */
+      justify-content: center;
+      /* Center children horizontally */
+      align-items: center;
+      /* Center children vertically */
+      min-height: 100vh;
+      /* Optional: Ensure the container takes at least the full height of the viewport */
       width: max-content;
-    }
-
-
-    @media (max-width: 600px) {
-      .grid-container {
-        flex-direction: column;
-        align-items: center;
-      }
     }
   </style>
 </head>
@@ -207,7 +188,6 @@
   <div class="grid-container">
     <div id="canvas"></div>
   </div>
-  <!-- <div id="canvas"></div> -->
 
   <script>
 
@@ -276,29 +256,6 @@
       // Note: You might need to adjust '20, 20' in setDragImage to align the drag image as per your requirement.
 
 
-      // document.querySelectorAll('.cell').forEach(cell => {
-      //   // cell.addEventListener('dragover', function (e) {
-      //   //   e.preventDefault();
-      //   // });
-
-      //   // cell.addEventListener('drop', function (e) {
-      //   //   e.preventDefault();
-      //   //   const id = e.dataTransfer.getData('text/plain');
-      //   //   const draggable = document.getElementById(id).cloneNode(true);
-      //   //   draggable.classList.remove('draggable');
-      //   //   draggable.classList.add('droppedPattern');
-      //   //   cell.innerHTML = ''; // Clear the cell
-      //   //   cell.appendChild(draggable); // Append the cloned pattern
-      //   // });
-
-      //   // cell.addEventListener('dblclick', function (e) {
-      //   //   // e.handleDoubleClick()
-      //   //   cell.innerHTML = ''; // Clear the cell on double-click
-      //   // });
-
-      //   // document.getElementById('clearGrid').addEventListener('click', clearGrid);
-      // });
-
       document.getElementById('updateGridSize').addEventListener('click', function () {
         const gridWidth = parseInt(document.getElementById('gridWidth').value, 10);
         const gridHeight = parseInt(document.getElementById('gridHeight').value, 10);
@@ -314,10 +271,6 @@
       function updateGrid(width, height) {
         const canvas = document.getElementById('canvas');
         canvas.innerHTML = ''; // Clear existing grid
-
-        // Ensure the grid container is set to display as a grid
-        // canvas.style.display = 'grid';
-        // canvas.style.padding = '20px';
 
         // Set the grid template columns based on the input width
         // This defines how many columns the grid will have, each 40px wide
@@ -335,20 +288,12 @@
           cell.addEventListener('drop', handleDrop);
           cell.addEventListener('dblclick', handleDoubleClick);
         }
-          // After updating the grid, reapply any necessary styles to ensure centering
-        const gridContainer = document.querySelector('.grid-container');
-        gridContainer.style.display = 'flex';
-        gridContainer.style.justifyContent = 'center';
-        gridContainer.style.alignItems = 'center';
 
         // Reset the scroll to show the top-left part of the grid, if needed
-        window.scrollTo(0, 0);
+        // console.log(`Updating grid to width: ${width}, height: ${height}`);
+        window.scrollTo(width * 20 - window.innerWidth / 2, 0);
 
       }
-
-      // function handleDoubleClick(e) {
-      //   e.target.innerHTML = ''; // This should clear the cell
-      // }
 
       const color1Picker = document.getElementById('color1');
       const color2Picker = document.getElementById('color2');
@@ -388,24 +333,6 @@
           cell.innerHTML = '';
         });
       }
-
-      // function updateColors() {
-      //   const color1 = document.getElementById('color1').value; // background color
-      //   const color2 = document.getElementById('color2').value; // text color
-
-      //   // Update the pattern colors as before
-      //   document.querySelectorAll('.color1').forEach(div => {
-      //     div.style.backgroundColor = color1;
-      //   });
-      //   document.querySelectorAll('.color2').forEach(div => {
-      //     div.style.backgroundColor = color2;
-      //   });
-
-      //   // Update the randomPattern div
-      //   const randomPatternDiv = document.getElementById('randomPattern');
-      //   randomPatternDiv.style.backgroundColor = color1; // Set the background to color1
-      //   randomPatternDiv.style.color = color2; // Set the text color to color2
-      // }
 
 
       // Event listener for the 'Fill Grid Randomly' button
