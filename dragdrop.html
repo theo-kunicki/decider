@@ -139,13 +139,13 @@
     <p>Drag and drop tiles from the palette to the grid. <br>
       Double-click to clear a grid cell. <br>
       Drag from the question mark tile to get a random choice of the other four tiles.
-    </p>
-  </div>
-
-  <div id="gridControls">
-    Width: <input type="number" id="gridWidth" placeholder="20" min="1" max="100">
-    Height: <input type="number" id="gridHeight" placeholder="20" min="1" max="100">
-    <button id="updateGridSize">Update Grid Size</button>
+      </p>
+      </div>
+      
+      <div id="gridControls">
+        Width: <input type="number" id="gridWidth" value="20" min="1" max="100">
+        Height: <input type="number" id="gridHeight" value="20" min="1" max="100">
+        <button id="updateGridSize">Update Grid Size</button>
   </div>
 
 
@@ -192,7 +192,7 @@
   <script>
 
     window.onload = function () {
-      window.scrollTo(0, 0);  // Scroll to the top-left corner of the window
+      window.scrollTo(window.innerWidth/2, 0);  // Scroll to the top-left corner of the window
     };
 
     function handleDragOver(e) {
@@ -227,7 +227,7 @@
 
       if (targetCell) {
         targetCell.innerHTML = ''; // Clear the content of the cell
-        console.log('Cell cleared'); // Debugging line
+        // console.log('Cell cleared'); // Debugging line
       }
     }
 
