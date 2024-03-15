@@ -4,19 +4,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Labyrinthoid</title>
   <style>
-    p {text-align: center;}
-    h1 {text-align: center;}
+    p {
+      text-align: center;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
     body {
-      margin: 0;
+      /* margin: 0; */
       padding-top: 20px;
       /* Ensure content is not hidden by browser UI */
+      /* display: flex;
+      flex-direction: column; */
       display: flex;
       flex-direction: column;
-      align-items: center;
       font-family: Arial, sans-serif;
+      text-align: center;
+      align-content: center;
+      justify-content: center;
+      width: 100%;
     }
+
 
     #controls {
       margin-bottom: 20px;
@@ -26,15 +39,17 @@
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
+      margin: auto;
+      justify-content: center;
     }
 
     #randomPattern {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 24px;
-}
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 24px;
+    }
 
 
     .draggable {
@@ -51,12 +66,6 @@
       height: 20px;
     }
 
-    .color1,
-    .color2 {
-      flex: 0 0 50%;
-      /* Ensure children maintain their size */
-    }
-
     .color1 {
       background-color: #084C61;
       /* Dark Cerulean */
@@ -68,10 +77,15 @@
     }
 
     #canvas {
+      overflow: auto;
+      /* min-width: 100%; */
       display: grid;
-      grid-template-columns: repeat(20, 40px);
-      gap: 0;
+      /* min-width: min-content; */
+      width: max-content;
+      /* Ensure the container can shrink to fit grid content */
+      padding: 20px;
     }
+
 
     .cell {
       width: 40px;
@@ -94,14 +108,66 @@
       flex: 0 0 50%;
       /* Prevent flex items from growing or shrinking */
     }
+
+    /* #gridControls {
+      margin-bottom: 20px;
+    } */
+
+    #gridControls input {
+      margin: 0 auto;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .content-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Center-align the flex items vertically */
+    }
+
+    /* .grid-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 auto;
+      /* Center-align the grid container horizontally 
+    } */
+    .grid-container {
+      overflow: auto;
+      display: flex;
+      justify-content: center; /* Center children horizontally */
+      align-items: center; /* Center children vertically */
+      min-height: 100vh; /* Optional: Ensure the container takes at least the full height of the viewport */
+      width: max-content;
+    }
+
+
+    @media (max-width: 600px) {
+      .grid-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <h1>Labyrinthoid Pattern Tool</h1>
-  <p>Drag and drop tiles from the palette to the grid. <br>
-    Double-click to clear a grid cell. <br>
-    Drag from the question mark tile to get a random choice of the other four tiles.</p>
+  <div class="content-container">
+    <h1>Labyrinthoid Pattern Tool</h1>
+    <p>Drag and drop tiles from the palette to the grid. <br>
+      Double-click to clear a grid cell. <br>
+      Drag from the question mark tile to get a random choice of the other four tiles.
+    </p>
+  </div>
+
+  <div id="gridControls">
+    Width: <input type="number" id="gridWidth" placeholder="20" min="1" max="100">
+    Height: <input type="number" id="gridHeight" placeholder="20" min="1" max="100">
+    <button id="updateGridSize">Update Grid Size</button>
+  </div>
+
+
   <div id="controls">
     Color 1: <input type="color" id="color1" value="#084C61">
     Color 2: <input type="color" id="color2" value="#F67E7D">
@@ -109,38 +175,85 @@
     <button id="clearGrid">Clear Grid</button>
   </div>
 
+
   <div id="palette">
     <div class="draggable" id="pattern1" draggable="true">
-      <div class="color1"></div><div class="color1"></div>
-      <div class="color2"></div><div class="color1"></div>
+      <div class="color1"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color1"></div>
     </div>
     <div class="draggable" id="pattern2" draggable="true">
-      <div class="color2"></div><div class="color1"></div>
-      <div class="color2"></div><div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color1"></div>
     </div>
     <div class="draggable" id="pattern3" draggable="true">
-      <div class="color1"></div><div class="color1"></div>
-      <div class="color2"></div><div class="color2"></div>
+      <div class="color1"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color2"></div>
     </div>
     <div class="draggable" id="pattern4" draggable="true">
-      <div class="color2"></div><div class="color1"></div>
-      <div class="color2"></div><div class="color2"></div>
+      <div class="color2"></div>
+      <div class="color1"></div>
+      <div class="color2"></div>
+      <div class="color2"></div>
     </div>
     <div class="draggable" id="randomPattern" draggable="true">?</div>
-
-
   </div>
 
-  <div id="canvas"></div>
+  <div class="grid-container">
+    <div id="canvas"></div>
+  </div>
+  <!-- <div id="canvas"></div> -->
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const canvas = document.getElementById('canvas');
-      for (let i = 0; i < 400; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        canvas.appendChild(cell);
+
+    window.onload = function () {
+      window.scrollTo(0, 0);  // Scroll to the top-left corner of the window
+    };
+
+    function handleDragOver(e) {
+      e.preventDefault();
+    }
+    function handleDrop(e) {
+      e.preventDefault();
+      const id = e.dataTransfer.getData('text/plain');
+      const draggable = document.getElementById(id).cloneNode(true);
+      draggable.classList.remove('draggable');
+      draggable.classList.add('droppedPattern');
+
+      let targetCell = e.target;
+
+      if (!targetCell.classList.contains('cell')) {
+        targetCell = targetCell.closest('.cell');
       }
+
+      if (targetCell) {
+        targetCell.innerHTML = '';
+        targetCell.appendChild(draggable);
+      }
+    }
+
+    function handleDoubleClick(e) {
+      let targetCell = e.target;
+
+      // If the target is not the cell itself but a child element, find the parent cell
+      if (!targetCell.classList.contains('cell')) {
+        targetCell = targetCell.closest('.cell');
+      }
+
+      if (targetCell) {
+        targetCell.innerHTML = ''; // Clear the content of the cell
+        console.log('Cell cleared'); // Debugging line
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      updateGrid(20, 20)
 
       document.querySelectorAll('.draggable').forEach(elem => {
         elem.addEventListener('dragstart', function (e) {
@@ -163,27 +276,79 @@
       // Note: You might need to adjust '20, 20' in setDragImage to align the drag image as per your requirement.
 
 
-      document.querySelectorAll('.cell').forEach(cell => {
-        cell.addEventListener('dragover', function (e) {
-          e.preventDefault();
-        });
+      // document.querySelectorAll('.cell').forEach(cell => {
+      //   // cell.addEventListener('dragover', function (e) {
+      //   //   e.preventDefault();
+      //   // });
 
-        cell.addEventListener('drop', function (e) {
-          e.preventDefault();
-          const id = e.dataTransfer.getData('text/plain');
-          const draggable = document.getElementById(id).cloneNode(true);
-          draggable.classList.remove('draggable');
-          draggable.classList.add('droppedPattern');
-          cell.innerHTML = ''; // Clear the cell
-          cell.appendChild(draggable); // Append the cloned pattern
-        });
+      //   // cell.addEventListener('drop', function (e) {
+      //   //   e.preventDefault();
+      //   //   const id = e.dataTransfer.getData('text/plain');
+      //   //   const draggable = document.getElementById(id).cloneNode(true);
+      //   //   draggable.classList.remove('draggable');
+      //   //   draggable.classList.add('droppedPattern');
+      //   //   cell.innerHTML = ''; // Clear the cell
+      //   //   cell.appendChild(draggable); // Append the cloned pattern
+      //   // });
 
-        cell.addEventListener('dblclick', function () {
-          cell.innerHTML = ''; // Clear the cell on double-click
-        });
+      //   // cell.addEventListener('dblclick', function (e) {
+      //   //   // e.handleDoubleClick()
+      //   //   cell.innerHTML = ''; // Clear the cell on double-click
+      //   // });
 
-        document.getElementById('clearGrid').addEventListener('click', clearGrid);
+      //   // document.getElementById('clearGrid').addEventListener('click', clearGrid);
+      // });
+
+      document.getElementById('updateGridSize').addEventListener('click', function () {
+        const gridWidth = parseInt(document.getElementById('gridWidth').value, 10);
+        const gridHeight = parseInt(document.getElementById('gridHeight').value, 10);
+
+        if (!isNaN(gridWidth) && gridWidth > 0 && !isNaN(gridHeight) && gridHeight > 0) {
+          updateGrid(gridWidth, gridHeight);
+        } else {
+          alert('Please enter valid width and height values.');
+        }
       });
+
+
+      function updateGrid(width, height) {
+        const canvas = document.getElementById('canvas');
+        canvas.innerHTML = ''; // Clear existing grid
+
+        // Ensure the grid container is set to display as a grid
+        // canvas.style.display = 'grid';
+        // canvas.style.padding = '20px';
+
+        // Set the grid template columns based on the input width
+        // This defines how many columns the grid will have, each 40px wide
+
+        canvas.style.gridTemplateColumns = `repeat(${width}, 40px)`;
+
+        // Create cells based on the input width and height
+        for (let i = 0; i < width * height; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          canvas.appendChild(cell);
+
+          // Attach event listeners for drag-and-drop functionality to each cell
+          cell.addEventListener('dragover', handleDragOver);
+          cell.addEventListener('drop', handleDrop);
+          cell.addEventListener('dblclick', handleDoubleClick);
+        }
+          // After updating the grid, reapply any necessary styles to ensure centering
+        const gridContainer = document.querySelector('.grid-container');
+        gridContainer.style.display = 'flex';
+        gridContainer.style.justifyContent = 'center';
+        gridContainer.style.alignItems = 'center';
+
+        // Reset the scroll to show the top-left part of the grid, if needed
+        window.scrollTo(0, 0);
+
+      }
+
+      // function handleDoubleClick(e) {
+      //   e.target.innerHTML = ''; // This should clear the cell
+      // }
 
       const color1Picker = document.getElementById('color1');
       const color2Picker = document.getElementById('color2');
@@ -197,6 +362,9 @@
         document.querySelectorAll('.color2').forEach(div => {
           div.style.backgroundColor = color2;
         });
+        const randomPatternDiv = document.getElementById('randomPattern');
+        randomPatternDiv.style.backgroundColor = color1; // Set the background to color1
+        randomPatternDiv.style.color = color2; // Set the text color to color2
       }
 
       color1Picker.addEventListener('input', updateColors);
@@ -221,27 +389,28 @@
         });
       }
 
-      function updateColors() {
-        const color1 = document.getElementById('color1').value; // background color
-        const color2 = document.getElementById('color2').value; // text color
+      // function updateColors() {
+      //   const color1 = document.getElementById('color1').value; // background color
+      //   const color2 = document.getElementById('color2').value; // text color
 
-        // Update the pattern colors as before
-        document.querySelectorAll('.color1').forEach(div => {
-          div.style.backgroundColor = color1;
-        });
-        document.querySelectorAll('.color2').forEach(div => {
-          div.style.backgroundColor = color2;
-        });
+      //   // Update the pattern colors as before
+      //   document.querySelectorAll('.color1').forEach(div => {
+      //     div.style.backgroundColor = color1;
+      //   });
+      //   document.querySelectorAll('.color2').forEach(div => {
+      //     div.style.backgroundColor = color2;
+      //   });
 
-        // Update the randomPattern div
-        const randomPatternDiv = document.getElementById('randomPattern');
-        randomPatternDiv.style.backgroundColor = color1; // Set the background to color1
-        randomPatternDiv.style.color = color2; // Set the text color to color2
-      }
+      //   // Update the randomPattern div
+      //   const randomPatternDiv = document.getElementById('randomPattern');
+      //   randomPatternDiv.style.backgroundColor = color1; // Set the background to color1
+      //   randomPatternDiv.style.color = color2; // Set the text color to color2
+      // }
 
 
       // Event listener for the 'Fill Grid Randomly' button
       document.getElementById('fillRandom').addEventListener('click', fillGridRandomly);
+      document.getElementById('clearGrid').addEventListener('click', clearGrid);
     });
   </script>
 
