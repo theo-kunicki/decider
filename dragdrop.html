@@ -23,7 +23,7 @@
       align-content: center;
       align-items: center;
       justify-content: center;
-      min-width: max-content;
+      /* min-width: max-content; */
     }
 
 
@@ -76,8 +76,9 @@
       overflow: auto;
       /* min-width: 100%; */
       display: grid;
-      min-width: min-content;
-      width: max-content;
+      /* min-width: min-content; */
+      /* width: max-content; */
+      max-width: 100%;
       /* Ensure the container can shrink to fit grid content */
       padding: 20px;
       justify-content: center;
@@ -131,7 +132,7 @@
       /* Center children horizontally */
       align-items: flex-start;
       /* Center children vertically */
-      min-height: 100vh;
+      /* min-height: 100vh; */
       /* Optional: Ensure the container takes at least the full height of the viewport */
       width: max-content;
     }
@@ -139,6 +140,12 @@
     .cell.filled {
       border: none; /* Remove the border for filled cells */
     }
+
+    #sizeControls input[type=range] {
+      width: 100%; /* Set the width of the slider */
+      margin: 10px 0; /* Add some margin for spacing */
+    }
+
 
   </style>
 </head>
@@ -165,6 +172,11 @@
     <button id="fillRandom">Fill Grid Randomly</button>
     <button id="clearGrid">Clear Grid</button>
   </div>
+
+  <div id="sizeControls">
+    Tile Size: <input type="range" id="tileSizeSlider" min="10" max="100" value="40">
+  </div>
+  
 
 
   <div id="palette">
@@ -291,6 +303,89 @@
         }
       });
 
+      document.getElementById('tileSizeSlider').addEventListener('input', function() {
+        const newSize = this.value; // Get the slider value
+        updateTileAndCellSize(newSize); // Update the size of the tiles and cells
+      });
+
+      // function updateTileAndCellSize(size) {
+      //   // Update the palette squares
+      //   document.querySelectorAll('.draggable').forEach(tile => {
+      //     tile.style.width = `${size}px`;
+      //     tile.style.height = `${size}px`;
+      //   });
+
+      //   // Update the grid cells
+      //   document.querySelectorAll('.cell').forEach(cell => {
+      //     cell.style.width = `${size}px`;
+      //     cell.style.height = `${size}px`;
+      //   });
+
+      //   // Adjust the grid container's grid-template-columns to accommodate new cell size
+      //   const canvas = document.getElementById('canvas');
+      //   const numColumns = Math.floor(canvas.offsetWidth / size); // Calculate the number of columns based on the new size and container width
+      //   canvas.style.gridTemplateColumns = `repeat(${numColumns}, 1fr)`;
+      // }
+
+      // function updateTileAndCellSize(size) {
+      //   // Update the palette squares
+      //   document.querySelectorAll('.draggable').forEach(tile => {
+      //     tile.style.width = `${size}px`;
+      //     tile.style.height = `${size}px`;
+          
+      //     // Update the size of the small squares inside each tile
+      //     Array.from(tile.children).forEach(smallSquare => {
+      //       smallSquare.style.width = `${size / 2}px`; // Half of the tile size
+      //       smallSquare.style.height = `${size / 2}px`; // Half of the tile size
+      //     });
+      //   });
+        
+      //   // Update the grid cells
+      //   document.querySelectorAll('.cell').forEach(cell => {
+      //     cell.style.width = `${size}px`;
+      //     cell.style.height = `${size}px`;
+      //   });
+
+      //   // Adjust the grid container's grid-template-columns to accommodate new cell size
+      //   const canvas = document.getElementById('canvas');
+      //   canvas.style.gridTemplateColumns = `repeat(auto-fill, ${size}px)`;
+      // }
+
+      function updateTileAndCellSize(size) {
+        // Update the palette squares and their inner small squares
+        document.querySelectorAll('.draggable').forEach(tile => {
+          tile.style.width = `${size}px`;
+          tile.style.height = `${size}px`;
+
+          // Update the size of the small squares inside each tile
+          Array.from(tile.children).forEach(smallSquare => {
+            smallSquare.style.width = `${size / 2}px`; // Half of the tile size
+            smallSquare.style.height = `${size / 2}px`; // Half of the tile size
+          });
+        });
+
+          // Scale the font size of the question mark
+          const questionMark = document.getElementById('randomPattern');
+          if (questionMark) {
+            questionMark.style.fontSize = `${size / 2}px`; // Adjust the font size based on the new tile size
+          }
+
+        // Update the grid cells to the new size, maintaining the number of columns and rows
+        const canvas = document.getElementById('canvas');
+        const numColumns = getComputedStyle(canvas).getPropertyValue('grid-template-columns').split(' ').length;
+        const numRows = Math.ceil(canvas.childElementCount / numColumns);
+
+        canvas.style.gridTemplateColumns = `repeat(${numColumns}, ${size}px)`;
+
+        document.querySelectorAll('.cell').forEach(cell => {
+          cell.style.width = `${size}px`;
+          cell.style.height = `${size}px`;
+        });
+      }
+
+
+
+
 
       function updateGrid(width, height) {
         const canvas = document.getElementById('canvas');
@@ -316,7 +411,7 @@
 
         // Reset the scroll to show the top-left part of the grid, if needed
         // console.log(`Updating grid to width: ${width}, height: ${height}`);
-        window.scrollTo(width * 20 - window.innerWidth / 2, 0);
+        // window.scrollTo(width * 20 - window.innerWidth / 2, 0);
 
       }
 
